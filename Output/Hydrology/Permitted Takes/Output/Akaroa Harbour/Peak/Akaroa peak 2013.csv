@@ -1,0 +1,22 @@
+Estimated Population not on a Reticulated System or Stock Water Network
+
+User,Est. Population,Factor (Ltrs/head/day),Est. Total Water Use (m3/day)
+Humans*,463,1250.0,579.478232861
+Dairy Cattle,671,105.0,70.455
+Beef Cattle,4192,68.0,285.056
+Sheep,26031,5.0,130.155
+Deer,207,45.0,9.315
+Pigs,7,17.0,0.119
+Goats,46,8.0,0.368
+Horses,84,83.0,6.972
+Ostriches and Emus,3,0.0,0.0
+Alpacas and Llamas,178,19.0,3.382
+Poultry,180,0.45,0.081
+
+Leakage,,,0.0
+
+TOTAL,,,1085.38122559
+
+* Based on average property-population density of 1.908
+Estimated Number of Properties (based on 2013 Census (Statistics NZ)) = 243
+Estimated Stock Numbers based on data from Agribase (AsureQuality)
