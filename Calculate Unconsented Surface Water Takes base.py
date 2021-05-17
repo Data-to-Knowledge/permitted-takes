@@ -73,7 +73,6 @@ for val in vals:
         leakage = float(val[1])
 
 
-#output = vals[-1][1]
 output = arcpy.GetParameterAsText(1)
 
 if os.path.exists (r"\\fs02\ManagedShares2\Data\Surface Water\shared\permitted_takes\Output") == False:
@@ -172,7 +171,7 @@ for row in cursor:
         prop = 0
         human = 0
         
-    #human_ratio = round(row[1],0)/float(row[0])
+    
     dwell_ratio = round(row[2],0)/float(row[0])
     
     cursor.updateRow([row[0],long(round(human,0)),long(round(prop,0)),row[3],dwell_ratio])
