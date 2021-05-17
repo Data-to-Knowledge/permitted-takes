@@ -73,7 +73,6 @@ for val in vals:
         leakage = float(val[1])
 
 
-#output = vals[-1][1]
 output = arcpy.GetParameterAsText(1)
 
 if os.path.exists (r"\\fs02\ManagedShares2\Data\Surface Water\shared\permitted_takes\Output") == False:
@@ -101,25 +100,15 @@ for f in arcpy.ListFeatureClasses():
 
 print "Extracting Datasets...."
 arcpy.AddMessage("\nExtracting Datasets....")
-
-#arcpy.MakeFeatureLayer_management(r"C:\Users\hamishl\Documents\ArcGIS\Default.gdb\Square","Input") ##INPUT
 arcpy.MakeFeatureLayer_management(arcpy.GetParameterAsText(0),"Input")
 
 arcpy.Dissolve_management("Input",r"\\fs02\ManagedShares2\Data\Surface Water\shared\permitted_takes\Output\Hydrology\Permitted Takes\Scratch.gdb\Area_Extent")
 arcpy.Delete_management("Input")
 arcpy.MakeFeatureLayer_management(r"\\fs02\ManagedShares2\Data\Surface Water\shared\permitted_takes\Output\Hydrology\Permitted Takes\Scratch.gdb\Area_Extent","Extent")
-
-#print "\tUrban Area"
-#arcpy.AddMessage("\tUrban Area")
-#arcpy.MakeFeatureLayer_management(r"Database Connections\DC GISSQL2012 GISuser.sde\GIS.DBO.STATISTICS_NZTM_UrbanArea_Generalised",
-    #"Urban","NOT(UA2013_NAM IN ( 'Rural (Incl.some Off Shore Islands)', 'Rural Centre', 'Oceanic', 'Oceanic-in Region but not in TA','Inland Water not in Urban Area'))")
-#arcpy.SelectLayerByLocation_management("Urban","INTERSECT","Extent")
-#arcpy.CopyFeatures_management("Urban",r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Urban_Area")
-#arcpy.Delete_management("Urban")
     
 print "\tParcels"
 arcpy.AddMessage("\tParcels")
-#arcpy.MakeFeatureLayer_management(r"Database Connections\DC GISSQL2012 GISuser.sde\GIS.DBO.VCADASTRAL_NZTM_PARCELS_VALUATION","Property")
+
 arcpy.MakeFeatureLayer_management(r"Database Connections\DC GISSQL2012 LDS GISuser.sde\LDS.DBO.CADASTRAL_NZTM_PARCELS_VALUATION","Property")
 
 arcpy.SelectLayerByLocation_management("Property","INTERSECT","Extent")
@@ -152,24 +141,6 @@ arcpy.SelectLayerByLocation_management("Agribase","INTERSECT","Extent",selection
 arcpy.CopyFeatures_management("Agribase",r"\\fs02\ManagedShares2\Data\Surface Water\shared\permitted_takes\Output\Hydrology\Permitted Takes\Scratch.gdb\Landuse")
 
 
-#print "Removing Urban Areas....."
-#arcpy.AddMessage("Removing Urban Areas....")
-#arcpy.MakeFeatureLayer_management(r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Urban_Area","Urban")
-#arcpy.Union_analysis([[r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Area_Extent",1],[r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Urban_Area",2]],r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Rural_Extent")
-#arcpy.MakeFeatureLayer_management(r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Rural_Extent","Rural")
-#arcpy.SelectLayerByAttribute_management("Rural","NEW_SELECTION","FID_Urban_Area <> -1")
-#arcpy.DeleteFeatures_management("Rural")
-#arcpy.Delete_management("Extent")
-#arcpy.Delete_management("Urban")
-#arcpy.Delete_management("Rural")
-
-
-#if int(arcpy.GetCount_management(r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Rural_Extent").getOutput(0)) == 0:
-    #arcpy.MakeFeatureLayer_management(r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Area_Extent","Extent")
-#else:
-    #arcpy.MakeFeatureLayer_management(r"C:\Temp\Hydrology\Permitted Takes\Scratch.gdb\Rural_Extent","Extent")
-
-
 print "Removing Non Parcel Areas...."
 arcpy.AddMessage("Removing Non Parcel Areas....")
 
@@ -200,7 +171,7 @@ for row in cursor:
         prop = 0
         human = 0
         
-    #human_ratio = round(row[1],0)/float(row[0])
+   
     dwell_ratio = round(row[2],0)/float(row[0])
     
     cursor.updateRow([row[0],long(round(human,0)),long(round(prop,0)),row[3],dwell_ratio])
@@ -296,14 +267,13 @@ cursor = arcpy.da.UpdateCursor("Extent",["DENSITY","PROPERTY_NO"])
 
 for row in cursor:
     dwell = 0
-    #human = 0
     density = 0
     cnt = 0
 
     for srow in arcpy.da.SearchCursor("Pop",["SHAPE@AREA","DENSITY","PROPERTY_SQM"]):
         if srow[2] <> None:
             dwell = dwell + (float(srow[0]) * float(srow[2]))
-            #human = human + ((float(srow[0]) * float(srow[2])) * float(srow[1]))
+           
 
         if srow[1] <> None:
             density = density + float(srow[1])
